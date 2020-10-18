@@ -1,0 +1,66 @@
+public class Z字形变换 {
+/*    将一个给定字符串根据给定的行数，以从上往下、从左到右进行 Z 字形排列。
+
+    比如输入字符串为 "LEETCODEISHIRING" 行数为 3 时，排列如下：
+
+    L   C   I   R
+    E T O E S I I G
+    E   D   H   N
+    之后，你的输出需要从左往右逐行读取，产生出一个新的字符串，比如："LCIRETOESIIGEDHN"。
+
+    请你实现这个将字符串进行指定行数变换的函数：
+
+    string convert(string s, int numRows);
+    示例 1:
+
+    输入: s = "LEETCODEISHIRING", numRows = 3
+    输出: "LCIRETOESIIGEDHN"
+    示例 2:
+
+    输入: s = "LEETCODEISHIRING", numRows = 4
+    输出: "LDREOEIIECIHNTSG"
+    解释:
+
+    L     D     R
+    E   O E   I I
+    E C   I H   N
+    T     S     G
+*/
+    public String convert(String s, int numRows) {
+        StringBuilder sb = new StringBuilder();
+        /*
+            L     D     R
+            E   O E   I I
+            E C   I H   N
+            T     S     G
+         */
+        if(numRows == 1){
+            return s;
+        }
+        int groupNum = numRows+numRows-2; //一组元素的字符数量，L到O为一组，D到I为一组
+        for(int i = 0;i < numRows;i++){     //存入每一行
+            for(int j = 0;j < (s.length()/groupNum)+1;j++){   //(s.length()/groupNum)+1表示算出整组的数量，加上后面残余的一组
+                if(i==0||i==numRows-1) {    //对于第一行和最后一行，每组只有一个元素，判断下标不会越界后直接存入
+                    if (j * groupNum + i < s.length()) {
+                        sb.append(s.charAt(j * groupNum + i));
+                    }
+                }
+                else {    //中间行每组元素可能会存入两个值，例如EO，EI，I
+                    if (j * groupNum + i < s.length()) {    //存入第一个值
+                        sb.append(s.charAt(j * groupNum + i));
+                    }
+                    if (j * groupNum + groupNum - i < s.length()){   //存入第二个值
+                        sb.append(s.charAt(j * groupNum + groupNum - i));
+                    }
+                }
+            }
+        }
+
+        return sb.toString();
+    }
+
+    public static void main(String[] args) {
+        Z字形变换 z = new Z字形变换();
+        System.out.println(z.convert("AB",1));
+    }
+}
